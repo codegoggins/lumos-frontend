@@ -2,23 +2,21 @@ import { useState } from "react";
 import { Button } from "antd";
 import { Link } from "react-router-dom";
 import CustomInput from "../../components/CustomInput";
-import CustomPassword from "../../components/CustomPassword";
 
-const Login = () => {
+const ForgotPassword = () => {
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
 
   const handleSubmit = () => {
-    console.log({ email, password });
+    console.log({ email });
   };
 
   return (
     <div className="w-full">
       <h1 className="text-2xl font-bold text-black-primary mb-1">
-        Welcome Back
+        Forgot Password
       </h1>
       <p className="text-text-secondary text-sm mb-8">
-        Sign in to continue to your account
+        Enter your email and we'll send you a verification code
       </p>
 
       <div className="flex flex-col gap-5">
@@ -29,35 +27,19 @@ const Login = () => {
           onChange={(e) => setEmail(e.target.value)}
         />
 
-        <CustomPassword
-          label="Password"
-          placeholder="Enter your password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-
-        <div className="flex justify-end -mt-2">
-          <Link
-            to="/auth/forgot-password"
-            className="text-xs text-primary font-medium"
-          >
-            Forgot password?
-          </Link>
-        </div>
-
         <Button type="primary" block onClick={handleSubmit}>
-          Log In
+          Send Code
         </Button>
       </div>
 
       <p className="text-center text-sm text-text-secondary mt-6">
-        Don't have an account?{" "}
-        <Link to="/auth/signup" className="text-primary font-medium">
-          Sign up
+        Remember your password?{" "}
+        <Link to="/auth/login" className="text-primary font-medium">
+          Log in
         </Link>
       </p>
     </div>
   );
 };
 
-export default Login;
+export default ForgotPassword;

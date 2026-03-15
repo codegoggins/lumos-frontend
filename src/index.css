@@ -1,6 +1,99 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Sora:wght@100..800&display=swap");
 @import "tailwindcss";
 
 @theme {
-  --color-primary: #c35a56;
-  --color-lightborder: #EDFOFF;
+  --color-primary: #6b66de;
+  --color-lightborder: #edf0ff;
+  --color-primary-light: #ebebfb;
+  --color-black-primary: #141414;
+
+  /* Status colors */
+  --color-success: #22c55e;
+  --color-success-bg: #f0fdf4;
+  --color-error: #ef4444;
+  --color-error-bg: #fef2f2;
+  --color-warning: #f59e0b;
+  --color-warning-bg: #fffbeb;
+  --color-pending: #3b82f6;
+  --color-pending-bg: #eff6ff;
+  --color-info: #06b6d4;
+  --color-info-bg: #ecfeff;
+
+  /* Text colors */
+  --color-text-primary: #141414;
+  --color-text-secondary: #6b7280;
+  --color-text-muted: #9ca3af;
+  --color-text-inverse: #ffffff;
+
+  /* Background colors */
+  --color-bg-primary: #ffffff;
+  --color-bg-secondary: #f9fafb;
+  --color-bg-muted: #f3f4f6;
+
+  /* Border colors */
+  --color-border: #e5e7eb;
+  --color-border-dark: #d1d5db;
+
+  /* Disabled state */
+  --color-disabled: #9ca3af;
+  --color-disabled-bg: #f3f4f6;
+}
+
+@layer base {
+  /* Hide scrollbars globally (all browsers) */
+  * {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE 10+ / Edge (legacy) */
+  }
+
+  *::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera, Edge (Chromium) */
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    -moz-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    font-family: "Sora", sans-serif;
+    min-height: 100vh;
+    min-height: 100dvh;
+    line-height: 1.5;
+    text-rendering: optimizeLegibility;
+  }
+
+  img,
+  picture,
+  video,
+  canvas,
+  svg {
+    display: block;
+    max-width: 100%;
+  }
+
+  input,
+  button,
+  textarea,
+  select {
+    font: inherit;
+    color: inherit;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+
+  :focus:not(:focus-visible) {
+    outline: none;
+  }
 }
