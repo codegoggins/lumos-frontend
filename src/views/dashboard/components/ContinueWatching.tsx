@@ -1,52 +1,31 @@
 import { useRef } from "react";
+import { motion } from "framer-motion";
 import { LuChevronLeft, LuChevronRight } from "react-icons/lu";
 
 const continueWatchingCourses = [
-  {
-    image:
-      "https://images.unsplash.com/photo-1561070791-2526d30994b5?w=400&h=250&fit=crop",
-    name: "UI Design Fundamentals",
-    progress: 65,
-    mentor: "Sarah Johnson",
-  },
-  {
-    image:
-      "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=400&h=250&fit=crop",
-    name: "Advanced React Patterns",
-    progress: 42,
-    mentor: "Mike Chen",
-  },
-  {
-    image:
-      "https://images.unsplash.com/photo-1518432031352-d6fc5c10da5a?w=400&h=250&fit=crop",
-    name: "Node.js Masterclass",
-    progress: 30,
-    mentor: "Alex Rivera",
-  },
-  {
-    image:
-      "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&h=250&fit=crop",
-    name: "Data Visualization",
-    progress: 80,
-    mentor: "Priya Patel",
-  },
-  {
-    image:
-      "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=400&h=250&fit=crop",
-    name: "Machine Learning Basics",
-    progress: 18,
-    mentor: "David Kim",
-  },
+  { image: "https://images.unsplash.com/photo-1561070791-2526d30994b5?w=400&h=250&fit=crop", name: "UI Design Fundamentals", progress: 65, mentor: "Sarah Johnson" },
+  { image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=400&h=250&fit=crop", name: "Advanced React Patterns", progress: 42, mentor: "Mike Chen" },
+  { image: "https://images.unsplash.com/photo-1518432031352-d6fc5c10da5a?w=400&h=250&fit=crop", name: "Node.js Masterclass", progress: 30, mentor: "Alex Rivera" },
+  { image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&h=250&fit=crop", name: "Data Visualization", progress: 80, mentor: "Priya Patel" },
+  { image: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=400&h=250&fit=crop", name: "Machine Learning Basics", progress: 18, mentor: "David Kim" },
 ];
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: { delay: i * 0.08, duration: 0.4, ease: "easeOut" },
+  }),
+};
 
 const ContinueWatching = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const scroll = (direction: "left" | "right") => {
     if (!scrollRef.current) return;
-    const scrollAmount = 260;
     scrollRef.current.scrollBy({
-      left: direction === "left" ? -scrollAmount : scrollAmount,
+      left: direction === "left" ? -260 : 260,
       behavior: "smooth",
     });
   };
@@ -58,25 +37,35 @@ const ContinueWatching = () => {
           Continue Watching
         </h2>
         <div className="flex gap-2">
-          <button
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
             onClick={() => scroll("left")}
             className="w-8 h-8 rounded-lg bg-white shadow-sm flex items-center justify-center text-text-secondary hover:text-text-primary transition-colors cursor-pointer"
           >
             <LuChevronLeft className="text-lg" />
-          </button>
-          <button
+          </motion.button>
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
             onClick={() => scroll("right")}
             className="w-8 h-8 rounded-lg bg-white shadow-sm flex items-center justify-center text-text-secondary hover:text-text-primary transition-colors cursor-pointer"
           >
             <LuChevronRight className="text-lg" />
-          </button>
+          </motion.button>
         </div>
       </div>
-      <div ref={scrollRef} className="flex gap-4 overflow-x-auto pb-2">
-        {continueWatchingCourses.map((course) => (
-          <div
+      <div ref={scrollRef} className="flex gap-4 overflow-x-auto pb-2 scrollbar-hide">
+        {continueWatchingCourses.map((course, i) => (
+          <motion.div
             key={course.name}
-            className="bg-white rounded-2xl shadow-sm overflow-hidden min-w-[230px] max-w-[230px] shrink-0"
+            custom={i}
+            initial="hidden"
+            animate="visible"
+            variants={cardVariants}
+            whileHover={{ scale: 1.02, y: -4 }}
+            transition={{ duration: 0.2 }}
+            className="bg-white rounded-xl shadow-sm overflow-hidden min-w-[230px] max-w-[230px] shrink-0 cursor-pointer"
           >
             <img
               src={course.image}
@@ -95,15 +84,17 @@ const ContinueWatching = () => {
                   </span>
                 </div>
                 <div className="w-full h-1.5 bg-bg-muted rounded-full overflow-hidden">
-                  <div
+                  <motion.div
+                    initial={{ width: 0 }}
+                    animate={{ width: `${course.progress}%` }}
+                    transition={{ duration: 0.8, delay: i * 0.08 + 0.3 }}
                     className="h-full rounded-full bg-primary"
-                    style={{ width: `${course.progress}%` }}
                   />
                 </div>
               </div>
               <p className="text-xs text-text-muted">{course.mentor}</p>
             </div>
-          </div>
+          </motion.div>
         ))}
       </div>
     </div>
