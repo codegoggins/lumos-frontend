@@ -1,4 +1,5 @@
 import { useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
   LuChevronLeft,
@@ -80,7 +81,7 @@ const hoverVariants = {
   hover: { scale: 1.02, y: -4, transition: { duration: 0.2, ease: "easeOut" } },
 };
 
-const MyCourseCard = ({ course, index }: { course: Course; index: number }) => (
+const MyCourseCard = ({ course, index, onContinue }: { course: Course; index: number; onContinue: () => void }) => (
   <motion.div
     custom={index}
     initial="hidden"
@@ -128,7 +129,7 @@ const MyCourseCard = ({ course, index }: { course: Course; index: number }) => (
             />
           </div>
         </div>
-        <Button type="primary" icon={<LuPlay className="text-sm" />} className="mt-auto">
+        <Button type="primary" icon={<LuPlay className="text-sm" />} className="mt-auto" onClick={onContinue}>
           Continue
         </Button>
       </div>
@@ -243,6 +244,8 @@ const ScrollableSection = ({ title, icon, children }: ScrollableSectionProps) =>
 };
 
 const Lesson = () => {
+  const navigate = useNavigate();
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -252,7 +255,12 @@ const Lesson = () => {
     >
       <ScrollableSection title="My Courses" icon={<LuBookOpen className="text-xl text-primary" />}>
         {myCourses.map((course, i) => (
-          <MyCourseCard key={course.id} course={course} index={i} />
+          <MyCourseCard
+            key={course.id}
+            course={course}
+            index={i}
+            onContinue={() => navigate(`/lesson/watch/${course.id}-1`)}
+          />
         ))}
       </ScrollableSection>
 

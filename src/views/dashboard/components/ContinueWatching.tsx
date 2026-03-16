@@ -1,13 +1,14 @@
 import { useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { LuChevronLeft, LuChevronRight } from "react-icons/lu";
 
 const continueWatchingCourses = [
-  { image: "https://images.unsplash.com/photo-1561070791-2526d30994b5?w=400&h=250&fit=crop", name: "UI Design Fundamentals", progress: 65, mentor: "Sarah Johnson" },
-  { image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=400&h=250&fit=crop", name: "Advanced React Patterns", progress: 42, mentor: "Mike Chen" },
-  { image: "https://images.unsplash.com/photo-1518432031352-d6fc5c10da5a?w=400&h=250&fit=crop", name: "Node.js Masterclass", progress: 30, mentor: "Alex Rivera" },
-  { image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&h=250&fit=crop", name: "Data Visualization", progress: 80, mentor: "Priya Patel" },
-  { image: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=400&h=250&fit=crop", name: "Machine Learning Basics", progress: 18, mentor: "David Kim" },
+  { id: "1", image: "https://images.unsplash.com/photo-1561070791-2526d30994b5?w=400&h=250&fit=crop", name: "UI Design Fundamentals", progress: 65, mentor: "Sarah Johnson" },
+  { id: "2", image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=400&h=250&fit=crop", name: "Advanced React Patterns", progress: 42, mentor: "Mike Chen" },
+  { id: "3", image: "https://images.unsplash.com/photo-1518432031352-d6fc5c10da5a?w=400&h=250&fit=crop", name: "Node.js Masterclass", progress: 30, mentor: "Alex Rivera" },
+  { id: "4", image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&h=250&fit=crop", name: "Data Visualization", progress: 80, mentor: "Priya Patel" },
+  { id: "5", image: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=400&h=250&fit=crop", name: "Machine Learning Basics", progress: 18, mentor: "David Kim" },
 ];
 
 const cardVariants = {
@@ -21,6 +22,7 @@ const cardVariants = {
 
 const ContinueWatching = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
 
   const scroll = (direction: "left" | "right") => {
     if (!scrollRef.current) return;
@@ -58,13 +60,14 @@ const ContinueWatching = () => {
       <div ref={scrollRef} className="flex gap-4 overflow-x-auto pb-2 scrollbar-hide">
         {continueWatchingCourses.map((course, i) => (
           <motion.div
-            key={course.name}
+            key={course.id}
             custom={i}
             initial="hidden"
             animate="visible"
             variants={cardVariants}
             whileHover={{ scale: 1.02, y: -4 }}
             transition={{ duration: 0.2 }}
+            onClick={() => navigate(`/lesson/watch/${course.id}-1`)}
             className="bg-white rounded-xl shadow-sm overflow-hidden min-w-[230px] max-w-[230px] shrink-0 cursor-pointer"
           >
             <img
