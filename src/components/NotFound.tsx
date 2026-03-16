@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 
 const messages = [
@@ -9,7 +10,9 @@ const messages = [
 ];
 
 const NotFound = () => {
-  const message = messages[Math.floor(Math.random() * messages.length)];
+  const [message] = useState(
+    () => messages[Math.floor(Math.random() * messages.length)],
+  );
 
   return (
     <div className="flex items-center justify-center h-screen bg-white">

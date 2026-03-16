@@ -4,7 +4,13 @@ import MainLayout from "../layout/MainLayout";
 import ErrorBoundary from "../components/ErrorBoundary";
 import NotFound from "../components/NotFound";
 import authRoutes from "../views/auth/router";
-import mainRoutes from "../views/main/router";
+import dashboardRoutes from "../views/dashboard/router";
+import inboxRoutes from "../views/inbox/router";
+import lessonRoutes from "../views/lesson/router";
+import coursesRoutes from "../views/courses/router";
+import settingsRoutes from "../views/settings/router";
+import groupsRoutes from "../views/groups/router";
+import tasksRoutes from "../views/tasks/router";
 
 const router = createBrowserRouter([
   {
@@ -29,7 +35,13 @@ const router = createBrowserRouter([
       {
         element: <MainLayout />,
         children: [
-          ...mainRoutes,
+          ...dashboardRoutes,
+          ...inboxRoutes,
+          ...lessonRoutes,
+          ...coursesRoutes,
+          ...settingsRoutes,
+          ...groupsRoutes,
+          ...tasksRoutes,
         ],
       },
       {
