@@ -7,7 +7,7 @@ import OnboardingModal from "../components/OnboardingModal";
 const MainLayout = () => {
   const [showOnboarding, setShowOnboarding] = useState(true);
   const location = useLocation();
-  const isInbox = location.pathname.includes("/inbox");
+  const isNoPadding = ["/inbox", "/community"].some(path => location.pathname.includes(path));
 
   const handleOnboardingSave = (data: { username: string; avatar: string }) => {
     console.log("Profile setup:", data);
@@ -21,7 +21,7 @@ const MainLayout = () => {
       <div className="flex-1 flex flex-col overflow-hidden">
         <Navbar />
 
-        <main className={`flex-1 overflow-y-auto ${isInbox ? "" : "p-6"}`}>
+        <main className={`flex-1 overflow-y-auto ${isNoPadding ? "" : "p-6"}`}>
           <Outlet />
         </main>
       </div>

@@ -17,7 +17,7 @@ const navItems = [
   { label: "Inbox", path: "/inbox", icon: LuInbox },
   { label: "Lesson", path: "/lesson", icon: LuGraduationCap },
   { label: "Task", path: "/tasks", icon: LuSquareCheck },
-  { label: "Group", path: "/groups", icon: LuUsers },
+  { label: "Community", path: "/community", icon: LuUsers },
 ];
 
 const friends = [

@@ -9,7 +9,7 @@ import inboxRoutes from "../views/inbox/router";
 import lessonRoutes from "../views/lesson/router";
 import coursesRoutes from "../views/courses/router";
 import settingsRoutes from "../views/settings/router";
-import groupsRoutes from "../views/groups/router";
+import communityRoutes from "../views/community/router";
 import tasksRoutes from "../views/tasks/router";
 
 const router = createBrowserRouter([
@@ -40,7 +40,7 @@ const router = createBrowserRouter([
           ...lessonRoutes,
           ...coursesRoutes,
           ...settingsRoutes,
-          ...groupsRoutes,
+          ...communityRoutes,
           ...tasksRoutes,
         ],
       },
