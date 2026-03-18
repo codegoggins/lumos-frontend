@@ -97,4 +97,9 @@
   :focus:not(:focus-visible) {
     outline: none;
   }
+
+  /* Fix SVG display for react-icons used inside Ant Design components */
+  [class^="ant-"] svg {
+    display: inline-block;
+  }
 }

@@ -1,4 +1,4 @@
-import { useParams, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Button, Collapse, Tabs } from "antd";
 import {
@@ -20,10 +20,11 @@ import {
   LuFileText,
   LuDownload,
 } from "react-icons/lu";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useMemo } from "react";
 
 // Free sample video URL
-const courseVideo = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4";
+const courseVideo =
+  "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4";
 
 interface LessonItem {
   id: string;
@@ -87,7 +88,9 @@ const generateLessons = (): LessonItem[] => {
   return lessonTitles.map((title, index) => ({
     id: `lesson-${index + 1}`,
     title,
-    duration: `${Math.floor(Math.random() * 20) + 8}:${Math.floor(Math.random() * 60)
+    duration: `${Math.floor(Math.random() * 20) + 8}:${Math.floor(
+      Math.random() * 60,
+    )
       .toString()
       .padStart(2, "0")}`,
     completed: index < 7, // First 7 lessons completed
@@ -101,9 +104,24 @@ const chaptersData: Chapter[] = [
     title: "Getting Started",
     totalDuration: "45:30",
     lessons: [
-      { id: "ch1-1", title: "Course Introduction", duration: "8:30", completed: true },
-      { id: "ch1-2", title: "Environment Setup", duration: "12:00", completed: true },
-      { id: "ch1-3", title: "Tool Installation", duration: "15:00", completed: true },
+      {
+        id: "ch1-1",
+        title: "Course Introduction",
+        duration: "8:30",
+        completed: true,
+      },
+      {
+        id: "ch1-2",
+        title: "Environment Setup",
+        duration: "12:00",
+        completed: true,
+      },
+      {
+        id: "ch1-3",
+        title: "Tool Installation",
+        duration: "15:00",
+        completed: true,
+      },
       { id: "ch1-4", title: "First Steps", duration: "10:00", completed: true },
     ],
   },
@@ -112,10 +130,30 @@ const chaptersData: Chapter[] = [
     title: "Core Fundamentals",
     totalDuration: "1:25:00",
     lessons: [
-      { id: "ch2-1", title: "Understanding Basics", duration: "18:30", completed: true },
-      { id: "ch2-2", title: "Key Principles", duration: "22:00", completed: true },
-      { id: "ch2-3", title: "Working with Data", duration: "25:30", completed: true },
-      { id: "ch2-4", title: "Practice Session", duration: "19:00", completed: false },
+      {
+        id: "ch2-1",
+        title: "Understanding Basics",
+        duration: "18:30",
+        completed: true,
+      },
+      {
+        id: "ch2-2",
+        title: "Key Principles",
+        duration: "22:00",
+        completed: true,
+      },
+      {
+        id: "ch2-3",
+        title: "Working with Data",
+        duration: "25:30",
+        completed: true,
+      },
+      {
+        id: "ch2-4",
+        title: "Practice Session",
+        duration: "19:00",
+        completed: false,
+      },
     ],
   },
   {
@@ -123,10 +161,30 @@ const chaptersData: Chapter[] = [
     title: "Advanced Concepts",
     totalDuration: "1:45:00",
     lessons: [
-      { id: "ch3-1", title: "Advanced Patterns", duration: "28:00", completed: false },
-      { id: "ch3-2", title: "Optimization Techniques", duration: "32:00", completed: false },
-      { id: "ch3-3", title: "Real-world Examples", duration: "25:00", completed: false },
-      { id: "ch3-4", title: "Complex Scenarios", duration: "20:00", completed: false },
+      {
+        id: "ch3-1",
+        title: "Advanced Patterns",
+        duration: "28:00",
+        completed: false,
+      },
+      {
+        id: "ch3-2",
+        title: "Optimization Techniques",
+        duration: "32:00",
+        completed: false,
+      },
+      {
+        id: "ch3-3",
+        title: "Real-world Examples",
+        duration: "25:00",
+        completed: false,
+      },
+      {
+        id: "ch3-4",
+        title: "Complex Scenarios",
+        duration: "20:00",
+        completed: false,
+      },
     ],
   },
   {
@@ -134,11 +192,31 @@ const chaptersData: Chapter[] = [
     title: "Practical Applications",
     totalDuration: "2:10:00",
     lessons: [
-      { id: "ch4-1", title: "Project Setup", duration: "18:00", completed: false },
-      { id: "ch4-2", title: "Building Features", duration: "35:00", completed: false },
-      { id: "ch4-3", title: "Testing & Debugging", duration: "28:00", completed: false },
+      {
+        id: "ch4-1",
+        title: "Project Setup",
+        duration: "18:00",
+        completed: false,
+      },
+      {
+        id: "ch4-2",
+        title: "Building Features",
+        duration: "35:00",
+        completed: false,
+      },
+      {
+        id: "ch4-3",
+        title: "Testing & Debugging",
+        duration: "28:00",
+        completed: false,
+      },
       { id: "ch4-4", title: "Deployment", duration: "25:00", completed: false },
-      { id: "ch4-5", title: "Final Review", duration: "24:00", completed: false },
+      {
+        id: "ch4-5",
+        title: "Final Review",
+        duration: "24:00",
+        completed: false,
+      },
     ],
   },
 ];
@@ -151,34 +229,79 @@ const resourcesData: ChapterResource[] = [
     resources: [
       { id: "r1-1", title: "Course Syllabus.pdf", type: "PDF", size: "245 KB" },
       { id: "r1-2", title: "Setup Guide.pdf", type: "PDF", size: "1.2 MB" },
-      { id: "r1-3", title: "Quick Reference Card.pdf", type: "PDF", size: "180 KB" },
+      {
+        id: "r1-3",
+        title: "Quick Reference Card.pdf",
+        type: "PDF",
+        size: "180 KB",
+      },
     ],
   },
   {
     chapterId: "ch-2",
     chapterTitle: "Core Fundamentals",
     resources: [
-      { id: "r2-1", title: "Fundamentals Cheatsheet.pdf", type: "PDF", size: "320 KB" },
-      { id: "r2-2", title: "Practice Exercises.pdf", type: "PDF", size: "890 KB" },
+      {
+        id: "r2-1",
+        title: "Fundamentals Cheatsheet.pdf",
+        type: "PDF",
+        size: "320 KB",
+      },
+      {
+        id: "r2-2",
+        title: "Practice Exercises.pdf",
+        type: "PDF",
+        size: "890 KB",
+      },
       { id: "r2-3", title: "Code Examples.pdf", type: "PDF", size: "1.5 MB" },
-      { id: "r2-4", title: "Data Structures Guide.pdf", type: "PDF", size: "2.1 MB" },
+      {
+        id: "r2-4",
+        title: "Data Structures Guide.pdf",
+        type: "PDF",
+        size: "2.1 MB",
+      },
     ],
   },
   {
     chapterId: "ch-3",
     chapterTitle: "Advanced Concepts",
     resources: [
-      { id: "r3-1", title: "Advanced Patterns Handbook.pdf", type: "PDF", size: "3.2 MB" },
-      { id: "r3-2", title: "Performance Guide.pdf", type: "PDF", size: "1.8 MB" },
+      {
+        id: "r3-1",
+        title: "Advanced Patterns Handbook.pdf",
+        type: "PDF",
+        size: "3.2 MB",
+      },
+      {
+        id: "r3-2",
+        title: "Performance Guide.pdf",
+        type: "PDF",
+        size: "1.8 MB",
+      },
     ],
   },
   {
     chapterId: "ch-4",
     chapterTitle: "Practical Applications",
     resources: [
-      { id: "r4-1", title: "Project Blueprint.pdf", type: "PDF", size: "4.5 MB" },
-      { id: "r4-2", title: "Testing Checklist.pdf", type: "PDF", size: "420 KB" },
-      { id: "r4-3", title: "Deployment Guide.pdf", type: "PDF", size: "2.8 MB" },
+      {
+        id: "r4-1",
+        title: "Project Blueprint.pdf",
+        type: "PDF",
+        size: "4.5 MB",
+      },
+      {
+        id: "r4-2",
+        title: "Testing Checklist.pdf",
+        type: "PDF",
+        size: "420 KB",
+      },
+      {
+        id: "r4-3",
+        title: "Deployment Guide.pdf",
+        type: "PDF",
+        size: "2.8 MB",
+      },
       { id: "r4-4", title: "Best Practices.pdf", type: "PDF", size: "1.1 MB" },
     ],
   },
@@ -212,7 +335,6 @@ const formatTime = (seconds: number) => {
 };
 
 const Watch = () => {
-  const { lessonId } = useParams();
   const navigate = useNavigate();
   const videoRef = useRef<HTMLVideoElement>(null);
   const progressRef = useRef<HTMLDivElement>(null);
@@ -317,62 +439,132 @@ const Watch = () => {
 
   const progress = duration > 0 ? (currentTime / duration) * 100 : 0;
 
-  // Chapters tab content
-  const ChaptersContent = () => (
-    <div className="flex flex-col gap-2">
-      <Collapse
-        accordion
-        defaultActiveKey={currentChapterId}
-        className="bg-transparent border-0"
-        expandIconPosition="end"
-        items={chaptersData.map((chapter) => {
-          const isCurrentChapter = chapter.id === currentChapterId;
+  // Chapters tab content - memoized to avoid recreating on each render
+  const chaptersContent = useMemo(
+    () => (
+      <div className="flex flex-col gap-2 [&_.ant-collapse-expand-icon]:!mt-1.5">
+        <Collapse
+          accordion
+          defaultActiveKey={currentChapterId}
+          className="bg-transparent border-0"
+          expandIconPosition="end"
+          items={chaptersData.map((chapter) => {
+            const isCurrentChapter = chapter.id === currentChapterId;
 
-          return {
-            key: chapter.id,
-            label: (
-              <div className="flex items-center justify-between w-full pr-2">
-                <div className="flex items-center gap-3">
-                  <div className="flex flex-col">
-                    <span className="text-xs font-medium text-text-primary">{chapter.title}</span>
-                    <div className="flex items-center gap-2 mt-0.5">
-                      <span className="text-[10px] text-text-muted">
-                        {chapter.lessons.filter((l) => l.completed).length}/{chapter.lessons.length}{" "}
-                        lessons
+            return {
+              key: chapter.id,
+              label: (
+                <div className="flex items-center justify-between w-full pr-2">
+                  <div className="flex items-center gap-3">
+                    <div className="flex flex-col">
+                      <span className="text-xs font-medium text-text-primary">
+                        {chapter.title}
                       </span>
-                      <span className="text-[10px] text-text-muted">•</span>
-                      <span className="text-[10px] text-text-muted">{chapter.totalDuration}</span>
+                      <div className="flex items-center gap-2 mt-0.5">
+                        <span className="text-[10px] text-text-muted">
+                          {chapter.lessons.filter((l) => l.completed).length}/
+                          {chapter.lessons.length} lessons
+                        </span>
+                        <span className="text-[10px] text-text-muted">•</span>
+                        <span className="text-[10px] text-text-muted">
+                          {chapter.totalDuration}
+                        </span>
+                      </div>
                     </div>
                   </div>
+                  <button
+                    className="w-7 h-7 rounded-full bg-primary flex items-center justify-center hover:bg-primary/90 transition-colors cursor-pointer"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <LuPlay className="text-[10px] text-white ml-0.5" />
+                  </button>
                 </div>
-                <button
-                  className="w-7 h-7 rounded-full bg-primary flex items-center justify-center hover:bg-primary/90 transition-colors cursor-pointer"
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  <LuPlay className="text-[10px] text-white ml-0.5" />
-                </button>
+              ),
+              children: (
+                <div className="flex flex-col gap-1 -mt-1">
+                  {chapter.lessons.map((lesson) => (
+                    <div
+                      key={lesson.id}
+                      className="flex items-center justify-between py-1.5 px-2 rounded hover:bg-bg-secondary cursor-pointer transition-colors"
+                    >
+                      <div className="flex items-center gap-2">
+                        <div
+                          className={`w-4 h-4 rounded-full flex items-center justify-center ${
+                            lesson.completed
+                              ? "bg-primary"
+                              : "border border-border-dark"
+                          }`}
+                        >
+                          {lesson.completed && (
+                            <LuCheck className="text-[8px] text-white" />
+                          )}
+                        </div>
+                        <span className="text-[11px] text-text-secondary">
+                          {lesson.title}
+                        </span>
+                      </div>
+                      <span className="text-[10px] text-text-muted">
+                        {lesson.duration}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              ),
+              style: {
+                marginBottom: 8,
+                background: "white",
+                borderRadius: 8,
+                border: isCurrentChapter
+                  ? "2px solid var(--primary)"
+                  : "1px solid var(--border)",
+              },
+            };
+          })}
+        />
+      </div>
+    ),
+    [currentChapterId],
+  );
+
+  // Resources tab content - memoized to avoid recreating on each render
+  const resourcesContent = useMemo(
+    () => (
+      <div className="flex flex-col gap-2">
+        <Collapse
+          accordion
+          className="bg-transparent border-0"
+          expandIconPosition="end"
+          items={resourcesData.map((chapter) => ({
+            key: chapter.chapterId,
+            label: (
+              <div className="flex items-center justify-between w-full">
+                <span className="text-xs font-medium text-text-primary">
+                  {chapter.chapterTitle}
+                </span>
+                <span className="text-[10px] text-text-muted mr-2">
+                  {chapter.resources.length} files
+                </span>
               </div>
             ),
             children: (
               <div className="flex flex-col gap-1 -mt-1">
-                {chapter.lessons.map((lesson, index) => (
+                {chapter.resources.map((resource) => (
                   <div
-                    key={lesson.id}
+                    key={resource.id}
                     className="flex items-center justify-between py-1.5 px-2 rounded hover:bg-bg-secondary cursor-pointer transition-colors"
                   >
                     <div className="flex items-center gap-2">
-                      <div
-                        className={`w-4 h-4 rounded-full flex items-center justify-center ${
-                          lesson.completed
-                            ? "bg-primary"
-                            : "border border-border-dark"
-                        }`}
-                      >
-                        {lesson.completed && <LuCheck className="text-[8px] text-white" />}
-                      </div>
-                      <span className="text-[11px] text-text-secondary">{lesson.title}</span>
+                      <LuFileText className="text-xs text-primary" />
+                      <span className="text-[11px] text-text-secondary">
+                        {resource.title}
+                      </span>
                     </div>
-                    <span className="text-[10px] text-text-muted">{lesson.duration}</span>
+                    <div className="flex items-center gap-2">
+                      <span className="text-[10px] text-text-muted">
+                        {resource.size}
+                      </span>
+                      <LuDownload className="text-xs text-text-muted hover:text-primary cursor-pointer" />
+                    </div>
                   </div>
                 ))}
               </div>
@@ -381,59 +573,13 @@ const Watch = () => {
               marginBottom: 8,
               background: "white",
               borderRadius: 8,
-              border: isCurrentChapter ? "2px solid var(--primary)" : "1px solid var(--border)",
+              border: "1px solid var(--border)",
             },
-          };
-        })}
-      />
-    </div>
-  );
-
-  // Resources tab content
-  const ResourcesContent = () => (
-    <div className="flex flex-col gap-2">
-      <Collapse
-        accordion
-        className="bg-transparent border-0"
-        expandIconPosition="end"
-        items={resourcesData.map((chapter) => ({
-          key: chapter.chapterId,
-          label: (
-            <div className="flex items-center justify-between w-full">
-              <span className="text-xs font-medium text-text-primary">{chapter.chapterTitle}</span>
-              <span className="text-[10px] text-text-muted mr-2">
-                {chapter.resources.length} files
-              </span>
-            </div>
-          ),
-          children: (
-            <div className="flex flex-col gap-1 -mt-1">
-              {chapter.resources.map((resource) => (
-                <div
-                  key={resource.id}
-                  className="flex items-center justify-between py-1.5 px-2 rounded hover:bg-bg-secondary cursor-pointer transition-colors"
-                >
-                  <div className="flex items-center gap-2">
-                    <LuFileText className="text-xs text-primary" />
-                    <span className="text-[11px] text-text-secondary">{resource.title}</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-[10px] text-text-muted">{resource.size}</span>
-                    <LuDownload className="text-xs text-text-muted hover:text-primary cursor-pointer" />
-                  </div>
-                </div>
-              ))}
-            </div>
-          ),
-          style: {
-            marginBottom: 8,
-            background: "white",
-            borderRadius: 8,
-            border: "1px solid var(--border)",
-          },
-        }))}
-      />
-    </div>
+          }))}
+        />
+      </div>
+    ),
+    [],
   );
 
   return (
@@ -454,7 +600,9 @@ const Watch = () => {
           <LuArrowLeft className="text-lg" />
         </motion.button>
         <div>
-          <h1 className="text-sm font-semibold text-text-primary">{courseInfo.name}</h1>
+          <h1 className="text-sm font-semibold text-text-primary">
+            {courseInfo.name}
+          </h1>
           <p className="text-xs text-text-muted">{mentorInfo.name}</p>
         </div>
       </div>
@@ -502,7 +650,10 @@ const Watch = () => {
             {/* Custom Controls Bar */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: showControls ? 1 : 0, y: showControls ? 0 : 20 }}
+              animate={{
+                opacity: showControls ? 1 : 0,
+                y: showControls ? 0 : 20,
+              }}
               transition={{ duration: 0.2 }}
               className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent p-4 pt-10"
             >
@@ -671,11 +822,15 @@ const Watch = () => {
                         <h4 className="text-xs font-semibold text-text-primary">
                           {mentorInfo.name}
                         </h4>
-                        <p className="text-[10px] text-text-muted mt-0.5">{mentorInfo.bio}</p>
+                        <p className="text-[10px] text-text-muted mt-0.5">
+                          {mentorInfo.bio}
+                        </p>
                         <div className="flex items-center gap-3 mt-1.5">
                           <div className="flex items-center gap-1">
                             <LuStar className="text-[10px] text-yellow-500 fill-yellow-500" />
-                            <span className="text-[10px] font-medium">{mentorInfo.rating}</span>
+                            <span className="text-[10px] font-medium">
+                              {mentorInfo.rating}
+                            </span>
                           </div>
                           <span className="text-[10px] text-text-muted">
                             {mentorInfo.courses} courses
@@ -694,7 +849,9 @@ const Watch = () => {
 
           {/* Course Content Tabs */}
           <div className="bg-white rounded-xl shadow-sm p-4 shrink-0">
-            <h3 className="text-xs font-semibold text-text-primary mb-3">Course Content</h3>
+            <h3 className="text-xs font-semibold text-text-primary mb-3">
+              Course Content
+            </h3>
             <Tabs
               defaultActiveKey="chapters"
               size="small"
@@ -703,12 +860,12 @@ const Watch = () => {
                 {
                   key: "chapters",
                   label: <span className="text-xs">Chapters</span>,
-                  children: <ChaptersContent />,
+                  children: chaptersContent,
                 },
                 {
                   key: "resources",
                   label: <span className="text-xs">Resources</span>,
-                  children: <ResourcesContent />,
+                  children: resourcesContent,
                 },
               ]}
             />
@@ -724,7 +881,9 @@ const Watch = () => {
         >
           {/* Progress Title */}
           <div className="flex items-center justify-between">
-            <h3 className="text-xs font-semibold text-text-primary">Your Progress</h3>
+            <h3 className="text-xs font-semibold text-text-primary">
+              Your Progress
+            </h3>
             <span className="text-xs font-medium text-primary">
               {completedCount}/{lessons.length} completed
             </span>
@@ -754,8 +913,8 @@ const Watch = () => {
                           lesson.completed
                             ? "bg-primary"
                             : isActive
-                            ? "border-2 border-primary bg-white"
-                            : "border-2 border-border-dark bg-white"
+                              ? "border-2 border-primary bg-white"
+                              : "border-2 border-border-dark bg-white"
                         }`}
                       >
                         {lesson.completed ? (
@@ -782,13 +941,15 @@ const Watch = () => {
                           isActive
                             ? "font-semibold text-primary"
                             : lesson.completed
-                            ? "font-medium text-text-primary"
-                            : "font-medium text-text-secondary"
+                              ? "font-medium text-text-primary"
+                              : "font-medium text-text-secondary"
                         }`}
                       >
                         {lesson.title}
                       </p>
-                      <p className="text-[10px] text-text-muted mt-0.5">{lesson.duration}</p>
+                      <p className="text-[10px] text-text-muted mt-0.5">
+                        {lesson.duration}
+                      </p>
                     </div>
                   </motion.div>
                 );
