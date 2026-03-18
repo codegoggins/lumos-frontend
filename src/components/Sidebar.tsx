@@ -1,4 +1,5 @@
 import { NavLink, useNavigate } from "react-router-dom";
+import Logo from "./Logo";
 import {
   LuLayoutDashboard,
   LuInbox,
@@ -44,7 +45,7 @@ const Sidebar = () => {
   return (
     <aside className="w-60 h-screen bg-white flex flex-col border-r border-lightborder">
       <div className="px-6 py-5">
-        <h1 className="text-xl font-bold text-primary">Lumos</h1>
+        <Logo />
       </div>
 
       <nav className="flex-1 flex flex-col px-3 overflow-y-auto">
