@@ -2,7 +2,6 @@ import { NavLink, Outlet } from "react-router-dom";
 import { 
   LuCompass, 
   LuUsers, 
-  LuUser, 
   LuTrendingUp, 
   LuBookmark 
 } from "react-icons/lu";
@@ -10,7 +9,6 @@ import {
 const sidebarLinks = [
   { label: "Home", path: "/community", icon: LuCompass, exact: true },
   { label: "Groups", path: "/community/groups", icon: LuUsers },
-  { label: "Profile", path: "/community/profile", icon: LuUser },
   { label: "Trending", path: "/community/trending", icon: LuTrendingUp },
   { label: "Saved", path: "/community/saved", icon: LuBookmark },
 ];
