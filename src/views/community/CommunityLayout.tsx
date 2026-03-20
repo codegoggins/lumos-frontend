@@ -19,7 +19,7 @@ const CommunityLayout = () => {
   return (
     <div className="flex bg-bg-primary overflow-hidden h-full">
       {/* Community Sidebar */}
-      <div className="w-60 flex-shrink-0 border-r border-lightborder flex flex-col bg-bg-primary">
+      <div className="w-48 flex-shrink-0 border-r border-lightborder flex flex-col bg-bg-primary">
         <nav className="flex-1 px-4 py-4 space-y-1">
           {sidebarLinks.map((link) => (
             <NavLink
