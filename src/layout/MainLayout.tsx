@@ -3,6 +3,7 @@ import { Outlet, useLocation } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
 import OnboardingModal from "../components/OnboardingModal";
+import { CartProvider } from "../context/CartContext";
 
 const MainLayout = () => {
   const [showOnboarding, setShowOnboarding] = useState(true);
@@ -15,20 +16,23 @@ const MainLayout = () => {
   };
 
   return (
-    <div className="flex h-screen bg-bg-grey">
-      <Sidebar />
+    <CartProvider>
+      <div className="flex h-screen bg-bg-grey">
+        <Sidebar />
 
-      <div className="flex-1 flex flex-col overflow-hidden">
-        <Navbar />
+        <div className="flex-1 flex flex-col overflow-hidden">
+          <Navbar />
 
-        <main className={`flex-1 overflow-y-auto ${isNoPadding ? "" : "p-6"}`}>
-          <Outlet />
-        </main>
+          <main className={`flex-1 overflow-y-auto ${isNoPadding ? "" : "p-6"}`}>
+            <Outlet />
+          </main>
+        </div>
+
+        <OnboardingModal open={showOnboarding} onSave={handleOnboardingSave} />
       </div>
-
-      <OnboardingModal open={showOnboarding} onSave={handleOnboardingSave} />
-    </div>
+    </CartProvider>
   );
 };
 
 export default MainLayout;
+

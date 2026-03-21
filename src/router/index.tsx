@@ -11,6 +11,7 @@ import coursesRoutes from "../views/courses/router";
 import settingsRoutes from "../views/settings/router";
 import communityRoutes from "../views/community/router";
 import tasksRoutes from "../views/tasks/router";
+import checkoutRoutes from "../views/checkout/router";
 
 const router = createBrowserRouter([
   {
@@ -42,6 +43,7 @@ const router = createBrowserRouter([
           ...settingsRoutes,
           ...communityRoutes,
           ...tasksRoutes,
+          ...checkoutRoutes,
         ],
       },
       {

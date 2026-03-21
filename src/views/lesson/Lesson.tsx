@@ -10,9 +10,11 @@ import {
   LuPlay,
   LuSparkles,
   LuTrendingUp,
-  LuPlus,
+  LuShoppingCart,
+  LuCheck,
 } from "react-icons/lu";
 import { Button } from "antd";
+import { useCart } from "../../context/CartContext";
 
 interface Course {
   id: string;
@@ -26,6 +28,7 @@ interface Course {
   rating?: number;
   students?: number;
   isNew?: boolean;
+  price?: number;
 }
 
 const myCourses: Course[] = [
@@ -42,29 +45,29 @@ const myCourses: Course[] = [
 ];
 
 const newCourses: Course[] = [
-  { id: "n1", image: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=500&h=300&fit=crop", name: "Machine Learning Basics", instructor: "David Kim", totalLessons: 36, duration: "22h 30m", rating: 4.9, students: 1250, isNew: true },
-  { id: "n2", image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=500&h=300&fit=crop", name: "Cloud Architecture", instructor: "Emma Wilson", totalLessons: 28, duration: "16h 45m", rating: 4.8, students: 890, isNew: true },
-  { id: "n3", image: "https://images.unsplash.com/photo-1563986768609-322da13575f3?w=500&h=300&fit=crop", name: "Blockchain Development", instructor: "James Lee", totalLessons: 24, duration: "14h 20m", rating: 4.7, students: 650, isNew: true },
-  { id: "n4", image: "https://images.unsplash.com/photo-1504639725590-34d0984388bd?w=500&h=300&fit=crop", name: "DevOps Essentials", instructor: "Sofia Garcia", totalLessons: 30, duration: "18h 00m", rating: 4.8, students: 1100, isNew: true },
-  { id: "n5", image: "https://images.unsplash.com/photo-1551650975-87deedd944c3?w=500&h=300&fit=crop", name: "iOS App Development", instructor: "Nina Patel", totalLessons: 35, duration: "20h 15m", rating: 4.9, students: 980, isNew: true },
-  { id: "n6", image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=500&h=300&fit=crop", name: "API Design Patterns", instructor: "Mark Thompson", totalLessons: 22, duration: "12h 30m", rating: 4.6, students: 720, isNew: true },
-  { id: "n7", image: "https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?w=500&h=300&fit=crop", name: "GraphQL Masterclass", instructor: "Anna Smith", totalLessons: 26, duration: "15h 00m", rating: 4.8, students: 850, isNew: true },
-  { id: "n8", image: "https://images.unsplash.com/photo-1542831371-29b0f74f9713?w=500&h=300&fit=crop", name: "Rust Programming", instructor: "Tom Harris", totalLessons: 40, duration: "24h 45m", rating: 4.7, students: 560, isNew: true },
-  { id: "n9", image: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=500&h=300&fit=crop", name: "TypeScript Deep Dive", instructor: "Rachel Green", totalLessons: 28, duration: "16h 20m", rating: 4.9, students: 1450, isNew: true },
-  { id: "n10", image: "https://images.unsplash.com/photo-1550439062-609e1531270e?w=500&h=300&fit=crop", name: "Kubernetes in Action", instructor: "John Miller", totalLessons: 32, duration: "19h 30m", rating: 4.8, students: 780, isNew: true },
+  { id: "n1", image: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=500&h=300&fit=crop", name: "Machine Learning Basics", instructor: "David Kim", totalLessons: 36, duration: "22h 30m", rating: 4.9, students: 1250, isNew: true, price: 49.99 },
+  { id: "n2", image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=500&h=300&fit=crop", name: "Cloud Architecture", instructor: "Emma Wilson", totalLessons: 28, duration: "16h 45m", rating: 4.8, students: 890, isNew: true, price: 39.99 },
+  { id: "n3", image: "https://images.unsplash.com/photo-1563986768609-322da13575f3?w=500&h=300&fit=crop", name: "Blockchain Development", instructor: "James Lee", totalLessons: 24, duration: "14h 20m", rating: 4.7, students: 650, isNew: true, price: 34.99 },
+  { id: "n4", image: "https://images.unsplash.com/photo-1504639725590-34d0984388bd?w=500&h=300&fit=crop", name: "DevOps Essentials", instructor: "Sofia Garcia", totalLessons: 30, duration: "18h 00m", rating: 4.8, students: 1100, isNew: true, price: 44.99 },
+  { id: "n5", image: "https://images.unsplash.com/photo-1551650975-87deedd944c3?w=500&h=300&fit=crop", name: "iOS App Development", instructor: "Nina Patel", totalLessons: 35, duration: "20h 15m", rating: 4.9, students: 980, isNew: true, price: 54.99 },
+  { id: "n6", image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=500&h=300&fit=crop", name: "API Design Patterns", instructor: "Mark Thompson", totalLessons: 22, duration: "12h 30m", rating: 4.6, students: 720, isNew: true, price: 29.99 },
+  { id: "n7", image: "https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?w=500&h=300&fit=crop", name: "GraphQL Masterclass", instructor: "Anna Smith", totalLessons: 26, duration: "15h 00m", rating: 4.8, students: 850, isNew: true, price: 39.99 },
+  { id: "n8", image: "https://images.unsplash.com/photo-1542831371-29b0f74f9713?w=500&h=300&fit=crop", name: "Rust Programming", instructor: "Tom Harris", totalLessons: 40, duration: "24h 45m", rating: 4.7, students: 560, isNew: true, price: 59.99 },
+  { id: "n9", image: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=500&h=300&fit=crop", name: "TypeScript Deep Dive", instructor: "Rachel Green", totalLessons: 28, duration: "16h 20m", rating: 4.9, students: 1450, isNew: true, price: 44.99 },
+  { id: "n10", image: "https://images.unsplash.com/photo-1550439062-609e1531270e?w=500&h=300&fit=crop", name: "Kubernetes in Action", instructor: "John Miller", totalLessons: 32, duration: "19h 30m", rating: 4.8, students: 780, isNew: true, price: 49.99 },
 ];
 
 const topRatedCourses: Course[] = [
-  { id: "t1", image: "https://images.unsplash.com/photo-1517180102446-f3ece451e9d8?w=500&h=300&fit=crop", name: "Python for Data Science", instructor: "Dr. Lisa Wang", totalLessons: 42, duration: "25h 30m", rating: 4.9, students: 8500 },
-  { id: "t2", image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=500&h=300&fit=crop", name: "Full-Stack Web Development", instructor: "Chris Anderson", totalLessons: 56, duration: "32h 15m", rating: 4.9, students: 12300 },
-  { id: "t3", image: "https://images.unsplash.com/photo-1551650975-87deedd944c3?w=500&h=300&fit=crop", name: "Mobile App Design", instructor: "Nina Patel", totalLessons: 26, duration: "14h 45m", rating: 4.8, students: 5600 },
-  { id: "t4", image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=500&h=300&fit=crop", name: "System Design Interviews", instructor: "Mark Thompson", totalLessons: 20, duration: "12h 00m", rating: 4.9, students: 9200 },
-  { id: "t5", image: "https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?w=500&h=300&fit=crop", name: "Advanced JavaScript", instructor: "Sarah Connor", totalLessons: 38, duration: "21h 30m", rating: 4.9, students: 15600 },
-  { id: "t6", image: "https://images.unsplash.com/photo-1542831371-29b0f74f9713?w=500&h=300&fit=crop", name: "AWS Certified Solutions", instructor: "Michael Scott", totalLessons: 45, duration: "28h 00m", rating: 4.8, students: 11200 },
-  { id: "t7", image: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=500&h=300&fit=crop", name: "React Native Complete", instructor: "Kevin Hart", totalLessons: 50, duration: "30h 15m", rating: 4.9, students: 8900 },
-  { id: "t8", image: "https://images.unsplash.com/photo-1550439062-609e1531270e?w=500&h=300&fit=crop", name: "Docker & Containerization", instructor: "Linda Park", totalLessons: 28, duration: "16h 45m", rating: 4.8, students: 7300 },
-  { id: "t9", image: "https://images.unsplash.com/photo-1504639725590-34d0984388bd?w=500&h=300&fit=crop", name: "Cybersecurity Fundamentals", instructor: "Ryan Reynolds", totalLessons: 35, duration: "20h 30m", rating: 4.9, students: 6800 },
-  { id: "t10", image: "https://images.unsplash.com/photo-1563986768609-322da13575f3?w=500&h=300&fit=crop", name: "Smart Contract Development", instructor: "Vitalik Chen", totalLessons: 30, duration: "18h 00m", rating: 4.8, students: 4500 },
+  { id: "t1", image: "https://images.unsplash.com/photo-1517180102446-f3ece451e9d8?w=500&h=300&fit=crop", name: "Python for Data Science", instructor: "Dr. Lisa Wang", totalLessons: 42, duration: "25h 30m", rating: 4.9, students: 8500, price: 59.99 },
+  { id: "t2", image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=500&h=300&fit=crop", name: "Full-Stack Web Development", instructor: "Chris Anderson", totalLessons: 56, duration: "32h 15m", rating: 4.9, students: 12300, price: 79.99 },
+  { id: "t3", image: "https://images.unsplash.com/photo-1551650975-87deedd944c3?w=500&h=300&fit=crop", name: "Mobile App Design", instructor: "Nina Patel", totalLessons: 26, duration: "14h 45m", rating: 4.8, students: 5600, price: 34.99 },
+  { id: "t4", image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=500&h=300&fit=crop", name: "System Design Interviews", instructor: "Mark Thompson", totalLessons: 20, duration: "12h 00m", rating: 4.9, students: 9200, price: 44.99 },
+  { id: "t5", image: "https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?w=500&h=300&fit=crop", name: "Advanced JavaScript", instructor: "Sarah Connor", totalLessons: 38, duration: "21h 30m", rating: 4.9, students: 15600, price: 49.99 },
+  { id: "t6", image: "https://images.unsplash.com/photo-1542831371-29b0f74f9713?w=500&h=300&fit=crop", name: "AWS Certified Solutions", instructor: "Michael Scott", totalLessons: 45, duration: "28h 00m", rating: 4.8, students: 11200, price: 69.99 },
+  { id: "t7", image: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=500&h=300&fit=crop", name: "React Native Complete", instructor: "Kevin Hart", totalLessons: 50, duration: "30h 15m", rating: 4.9, students: 8900, price: 74.99 },
+  { id: "t8", image: "https://images.unsplash.com/photo-1550439062-609e1531270e?w=500&h=300&fit=crop", name: "Docker & Containerization", instructor: "Linda Park", totalLessons: 28, duration: "16h 45m", rating: 4.8, students: 7300, price: 39.99 },
+  { id: "t9", image: "https://images.unsplash.com/photo-1504639725590-34d0984388bd?w=500&h=300&fit=crop", name: "Cybersecurity Fundamentals", instructor: "Ryan Reynolds", totalLessons: 35, duration: "20h 30m", rating: 4.9, students: 6800, price: 54.99 },
+  { id: "t10", image: "https://images.unsplash.com/photo-1563986768609-322da13575f3?w=500&h=300&fit=crop", name: "Smart Contract Development", instructor: "Vitalik Chen", totalLessons: 30, duration: "18h 00m", rating: 4.8, students: 4500, price: 44.99 },
 ];
 
 const cardVariants = {
@@ -72,13 +75,13 @@ const cardVariants = {
   visible: (i: number) => ({
     opacity: 1,
     y: 0,
-    transition: { delay: i * 0.05, duration: 0.4, ease: "easeOut" },
+    transition: { delay: i * 0.05, duration: 0.4, ease: "easeOut" as const },
   }),
 };
 
 const hoverVariants = {
   rest: { scale: 1, y: 0 },
-  hover: { scale: 1.02, y: -4, transition: { duration: 0.2, ease: "easeOut" } },
+  hover: { scale: 1.02, y: -4, transition: { duration: 0.2, ease: "easeOut" as const } },
 };
 
 const MyCourseCard = ({ course, index, onContinue }: { course: Course; index: number; onContinue: () => void }) => (
@@ -137,56 +140,86 @@ const MyCourseCard = ({ course, index, onContinue }: { course: Course; index: nu
   </motion.div>
 );
 
-const ExploreCourseCard = ({ course, index }: { course: Course; index: number }) => (
-  <motion.div
-    custom={index}
-    initial="hidden"
-    animate="visible"
-    variants={cardVariants}
-    whileHover="hover"
-    className="shrink-0"
-  >
+const ExploreCourseCard = ({ course, index }: { course: Course; index: number }) => {
+  const { state, dispatch } = useCart();
+  const isInCart = state.items.some((i) => i.id === course.id);
+
+  const handleAddToCart = () => {
+    dispatch({
+      type: "ADD_TO_CART",
+      payload: {
+        id: course.id,
+        name: course.name,
+        image: course.image,
+        instructor: course.instructor,
+        price: course.price ?? 0,
+        duration: course.duration,
+      },
+    });
+  };
+
+  return (
     <motion.div
-      variants={hoverVariants}
-      initial="rest"
+      custom={index}
+      initial="hidden"
+      animate="visible"
+      variants={cardVariants}
       whileHover="hover"
-      className="bg-white rounded-xl shadow-sm overflow-hidden min-w-[300px] max-w-[300px] flex flex-col cursor-pointer"
+      className="shrink-0"
     >
-      <div className="relative">
-        <img src={course.image} alt={course.name} className="w-full h-40 object-cover" />
-        {course.isNew && (
-          <span className="absolute top-3 left-3 bg-success text-white text-[11px] font-semibold px-2.5 py-1 rounded-md">
-            NEW
-          </span>
-        )}
-      </div>
-      <div className="p-4 flex flex-col gap-2.5 flex-1">
-        <p className="text-sm font-semibold text-text-primary line-clamp-1">{course.name}</p>
-        <p className="text-xs text-text-muted">{course.instructor}</p>
-        <div className="flex items-center gap-4 text-xs text-text-muted">
-          <span className="flex items-center gap-1.5">
-            <LuClock className="text-sm" />
-            {course.duration}
-          </span>
-          <span className="flex items-center gap-1.5">
-            <LuBookOpen className="text-sm" />
-            {course.totalLessons} lessons
-          </span>
+      <motion.div
+        variants={hoverVariants}
+        initial="rest"
+        whileHover="hover"
+        className="bg-white rounded-xl shadow-sm overflow-hidden min-w-[300px] max-w-[300px] flex flex-col cursor-pointer"
+      >
+        <div className="relative">
+          <img src={course.image} alt={course.name} className="w-full h-40 object-cover" />
+          {course.isNew && (
+            <span className="absolute top-3 left-3 bg-success text-white text-[11px] font-semibold px-2.5 py-1 rounded-md">
+              NEW
+            </span>
+          )}
+          {course.price && (
+            <span className="absolute top-3 right-3 bg-black/70 text-white text-[11px] font-bold px-2.5 py-1 rounded-md backdrop-blur-sm">
+              ${course.price}
+            </span>
+          )}
         </div>
-        <div className="flex items-center justify-between pt-3 border-t border-border">
-          <div className="flex items-center gap-1.5">
-            <LuStar className="text-sm text-warning fill-warning" />
-            <span className="text-xs font-semibold text-text-primary">{course.rating}</span>
-            <span className="text-xs text-text-muted">({course.students?.toLocaleString()})</span>
+        <div className="p-4 flex flex-col gap-2.5 flex-1">
+          <p className="text-sm font-semibold text-text-primary line-clamp-1">{course.name}</p>
+          <p className="text-xs text-text-muted">{course.instructor}</p>
+          <div className="flex items-center gap-4 text-xs text-text-muted">
+            <span className="flex items-center gap-1.5">
+              <LuClock className="text-sm" />
+              {course.duration}
+            </span>
+            <span className="flex items-center gap-1.5">
+              <LuBookOpen className="text-sm" />
+              {course.totalLessons} lessons
+            </span>
           </div>
+          <div className="flex items-center justify-between pt-3 border-t border-border">
+            <div className="flex items-center gap-1.5">
+              <LuStar className="text-sm text-warning fill-warning" />
+              <span className="text-xs font-semibold text-text-primary">{course.rating}</span>
+              <span className="text-xs text-text-muted">({course.students?.toLocaleString()})</span>
+            </div>
+          </div>
+          <Button
+            type={isInCart ? "default" : "primary"}
+            icon={isInCart ? <LuCheck className="text-sm" /> : <LuShoppingCart className="text-sm" />}
+            className="mt-auto"
+            onClick={handleAddToCart}
+            disabled={isInCart}
+          >
+            {isInCart ? "In Cart" : "Add to Cart"}
+          </Button>
         </div>
-        <Button type="primary" icon={<LuPlus className="text-sm" />} className="mt-auto">
-          Enroll Now
-        </Button>
-      </div>
+      </motion.div>
     </motion.div>
-  </motion.div>
-);
+  );
+};
 
 interface ScrollableSectionProps {
   title: string;
